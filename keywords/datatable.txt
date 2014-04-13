@@ -39,3 +39,11 @@ Get DataTable Column By Label
                 ...                 return $(this).text() === '${label}';}).index()+1;
     Should Be True  ${column} > ${0}  Column not found in datatable: "${label}"
     [Return]  ${column}
+
+DataTable Filter
+    [Arguments]  ${text}
+    [Documentation]  Filter the dataTable using the text passed in.
+    Execute Javascript  $('#datatable').dataTable().fnFilter(${text});
+    Wait For Condition  return $('#datatable_processing').css("visibility") == "hidden";
+    ${count}=  Execute JavaScript  return $('#datatable').dataTable().fnSettings().iTotalDisplayRecords;
+    [Return]  ${count}

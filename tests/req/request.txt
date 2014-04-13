@@ -1,0 +1,41 @@
+*** Settings ***
+Documentation     Test cases for req module
+#                  Run the suite and separate non critical tests as follows:
+#                      pybot -n experimental --suite "Request" edentest
+Library           String
+Resource          req_keywords.txt
+
+
+*** Keywords ***
+Get Alert
+    ${return}=  Get Alert Message
+    Set Suite Variable  ${alert}  ${return}
+
+*** Test Cases ***
+
+Create Request and Fulfill
+    [Tags]       Create  Request
+    Set Test Variable  ${WarehouseName}  Ainaro Warehouse (Warehouse)
+    Set Test Variable  ${RequestReason}  To update stock in preparation for the landfall of Typhoon Ragid
+    ${return}=  Add Request  ${WarehouseName}  ${RequestReason}
+    Set Suite Variable  ${req_id}  ${return}
+    Log  Request ID: ${req_id}
+    # Add Items to request
+    [Tags]       Add  Item
+    Add Item     Blankets  0  50  15
+    Add Item     Kitchen Sets  0  25  45
+    Add Item     Jerry Cans  0  100  30
+
+    [Tags]      Warehouse
+    # Go to the list of warehouses and find the National Warehouse
+    Go To  http://${BASEURL}/inv/warehouse
+    Wait Until Page Contains Element  xpath=//a[@db_id]
+    ${recordCnt}=  DataTable Filter  'National Warehouse'
+
+    # Open the National Warehouse and click the "Match Request" Tab
+    # & open the request created above.
+    Click Edit In Row  1
+    Click Link  rheader_tab_req_match
+
+    Wait Until Page Contains Element  xpath=//a[@db_id="${req_id}"]
+    Run Keyword And Continue On Failure  Click Link  xpath=//a[@db_id="${req_id}"][@title="Check"]

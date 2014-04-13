@@ -11,6 +11,7 @@ Resource          keywords/widgets.txt
 
 *** Variables ***
 ${DELAY}            0
+${TIMEOUT}          15
 ${BASEURL}          ${SERVER}/${APPNAME}
 ${HOMEPAGE}         http://${BASEURL}/default/index
 
@@ -18,6 +19,7 @@ ${HOMEPAGE}         http://${BASEURL}/default/index
 Start Testing
     Login To Eden
     Set Selenium Speed    ${DELAY}
+    Set Selenium Timeout  ${TIMEOUT}
 
 End Testing
     Logout From Eden

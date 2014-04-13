@@ -1,0 +1,47 @@
+*** Settings ***
+Resource          ../../resource.txt
+
+*** Variables ***
+${REQUEST URL}          http://${BASEURL}/req/req
+
+${WarehouseRequesting}  req_req_site_id
+${ReqPurpose}           req_req_purpose
+
+${ReqItem}              dummy_req_req_item_item_id
+${ReqItemAC}            ui-id-1
+${ReqItemPack}          req_req_item_item_pack_id
+${ReqItemQuantity}      req_req_item_quantity
+${ReqItemValue}         req_req_item_pack_value
+
+${addBtn}               show-add-btn
+${actionBtn}            action-btn
+
+
+*** Keywords ***
+
+Add Request
+    [arguments]  ${WarehouseName}  ${RequestReason}
+    Go To  ${REQUEST URL}/create
+    Select From List By Label   ${WarehouseRequesting}  ${WarehouseName}
+    Input Text                  ${ReqPurpose}           ${RequestReason}
+    Submit CRUD Form
+    Should Show Confirmation
+    ${req_URL}=  Get Location
+    ${req_id}=  Remove String  ${req_URL}  ${REQUEST URL}  req_item  /
+    Return From Keyword  ${req_id}
+
+Add Item
+    [arguments]  ${ItemName}  ${PackID}  ${ItemAmount}  ${ItemPrice}
+    Wait Until Element Is Visible  ${addBtn}
+    Click Element  ${addBtn}
+    Input Text  ${ReqItem}  ${ItemName}
+    Wait Until Element Is Visible  ${ReqItemAC}
+    Click Link  ${ItemName}
+    Wait Until Element Is Visible  ${ReqItemPack}
+    Select From List By Index  ${ReqItemPack}  ${PackID}
+    Input Text  ${ReqItemQuantity}  ${ItemAmount}
+    Input Text  ${ReqItemValue}  ${ItemPrice}
+    Submit CRUD Form
+    Should Show Confirmation
+    Click Link  Return to Request
+

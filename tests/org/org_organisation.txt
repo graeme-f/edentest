@@ -14,7 +14,7 @@ ${OfficeNameField}      org_office_name
 ${OfficeTypeSelector}   org_office_office_type_id
 ${OfficeOrgSelector}    org_office_organisation_id
 
-${OrgTextFilter}        organisation-org_organisation_name-org_organisation_acronym-org_organisation_comments-text-filter
+${OrgTextFilter}        organisation-org_organisation_name-org_organisation_acronym-org_organisation_comments-org_parent_organisation_name-org_parent_organisation_acronym-text-filter
 ${OfficeTextFilter}     office-org_office_name-org_office_code-org_office_comments-org_organisation_name-org_organisation_acronym-gis_location_L0-gis_location_L1-gis_location_L2-gis_location_L3-gis_location_L4-text-filter
 
 *** Test Cases ***
